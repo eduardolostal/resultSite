@@ -1,0 +1,429 @@
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->  
+    <!--[if lt IE 9]>  
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>  
+    <![endif]-->  
+  
+    <!-- Le fav and touch icons -->  
+    <link href="style.css" rel="stylesheet">  
+    
+    <script type="text/javascript">
+        var chart;
+        
+        var categoriesArray = new Array();
+        // Alive Step
+        var dataAverageAlive = new Array();
+        var dataDeviationAlive = new Array();
+        var dataAverageDead = new Array();
+        var dataDeviationDead = new Array();
+        var dataAverageDontKnow = new Array();
+        var dataDeviationDontKnow = new Array();
+        // Shape Step
+        var dataAverageElongated = new Array();
+        var dataDeviationElongated = new Array();
+        var dataAverageRounded = new Array();
+        var dataDeviationRounded = new Array();
+        var dataAverageStar = new Array();
+        var dataDeviationStar = new Array();
+        // Cell Content Release Step
+        var dataAverageRelease = new Array();
+        var dataDeviationRelease = new Array();
+        // Alive Step
+        var dataAverageClustered = new Array();
+        var dataDeviationClustered = new Array();
+        var dataAverageScattered = new Array();
+        var dataDeviationScattered = new Array();
+        var dataAverageDistributionDontKnow = new Array();
+        var dataDeviationDistributionDontKnow = new Array();
+        
+        // Create the arrays separately through the input parameters of the template
+        for (var i=0;i<{{results_length}};i++){
+            categoriesArray[i] = String(i+1);
+            
+            // Alive Step
+            dataAverageAlive[i] = {{dataAverageAlive}}[i];
+            if (dataAverageAlive[i]-{{dataDeviationAlive}}[i] < 0)
+                dataDeviationAlive[i] = [0, dataAverageAlive[i]+{{dataDeviationAlive}}[i]];
+            else
+                dataDeviationAlive[i] = [dataAverageAlive[i]-{{dataDeviationAlive}}[i], dataAverageAlive[i]+{{dataDeviationAlive}}[i]];
+                
+            dataAverageDead[i] = {{dataAverageDead}}[i];
+            if (dataAverageDead[i]-{{dataDeviationDead}}[i] < 0)
+                dataDeviationDead[i] = [0, dataAverageDead[i]+{{dataDeviationDead}}[i]];
+            else
+                dataDeviationDead[i] = [dataAverageDead[i]-{{dataDeviationDead}}[i], dataAverageDead[i]+{{dataDeviationDead}}[i]];
+                
+            dataAverageDontKnow[i] = {{dataAverageDontKnow}}[i];
+            if (dataAverageDontKnow[i]-{{dataDeviationDontKnow}}[i] < 0)
+                dataDeviationDontKnow[i] = [0, dataAverageDontKnow[i]+{{dataDeviationDontKnow}}[i]];
+            else
+                dataDeviationDontKnow[i] = [dataAverageDontKnow[i]-{{dataDeviationDontKnow}}[i], dataAverageDontKnow[i]+{{dataDeviationDontKnow}}[i]];
+                
+            // Shape Step
+            dataAverageElongated[i] = {{dataAverageElongated}}[i];
+            if (dataAverageElongated[i]-{{dataDeviationElongated}}[i] < 0)
+                dataDeviationElongated[i] = [0, dataAverageElongated[i]+{{dataDeviationElongated}}[i]];
+            else
+                dataDeviationElongated[i] = [dataAverageElongated[i]-{{dataDeviationElongated}}[i], dataAverageElongated[i]+{{dataDeviationElongated}}[i]];
+                
+            dataAverageRounded[i] = {{dataAverageRounded}}[i];
+            if (dataAverageRounded[i]-{{dataDeviationRounded}}[i] < 0)
+                dataDeviationRounded[i] = [0, dataAverageRounded[i]+{{dataDeviationRounded}}[i]];
+            else
+                dataDeviationRounded[i] = [dataAverageRounded[i]-{{dataDeviationRounded}}[i], dataAverageRounded[i]+{{dataDeviationRounded}}[i]];
+                
+            dataAverageStar[i] = {{dataAverageStar}}[i];
+            if (dataAverageStar[i]-{{dataDeviationStar}}[i] < 0)
+                dataDeviationStar[i] = [0, dataAverageStar[i]+{{dataDeviationStar}}[i]];
+            else
+                dataDeviationStar[i] = [dataAverageStar[i]-{{dataDeviationStar}}[i], dataAverageStar[i]+{{dataDeviationStar}}[i]];
+                
+            // Release Step
+            dataAverageRelease[i] = {{dataAverageRelease}}[i];
+            if (dataAverageRelease[i]-{{dataDeviationRelease}}[i] < 0)
+                dataDeviationRelease[i] = [0, dataAverageRelease[i]+{{dataDeviationRelease}}[i]];
+            else
+                dataDeviationRelease[i] = [dataAverageRelease[i]-{{dataDeviationRelease}}[i], dataAverageRelease[i]+{{dataDeviationRelease}}[i]];
+            
+            // Mitochondria Distribution Step
+            dataAverageClustered[i] = {{dataAverageClustered}}[i];
+            if (dataAverageClustered[i]-{{dataDeviationClustered}}[i] < 0)
+                dataDeviationClustered[i] = [0, dataAverageClustered[i]+{{dataDeviationClustered}}[i]];
+            else
+                dataDeviationClustered[i] = [dataAverageClustered[i]-{{dataDeviationClustered}}[i], dataAverageClustered[i]+{{dataDeviationClustered}}[i]];
+                
+            dataAverageScattered[i] = {{dataAverageScattered}}[i];
+            if (dataAverageScattered[i]-{{dataDeviationScattered}}[i] < 0)
+                dataDeviationScattered[i] = [0, dataAverageScattered[i]+{{dataDeviationScattered}}[i]];
+            else
+                dataDeviationScattered[i] = [dataAverageScattered[i]-{{dataDeviationScattered}}[i], dataAverageScattered[i]+{{dataDeviationScattered}}[i]];
+                
+            dataAverageDistributionDontKnow[i] = {{dataAverageDistributionDontKnow}}[i];
+            if (dataAverageDistributionDontKnow[i]-{{dataDeviationDistributionDontKnow}}[i] < 0)
+                dataDeviationDistributionDontKnow[i] = [0, dataAverageDistributionDontKnow[i]+{{dataDeviationDistributionDontKnow}}[i]];
+            else
+                dataDeviationDistributionDontKnow[i] = [dataAverageDistributionDontKnow[i]-{{dataDeviationDistributionDontKnow}}[i], dataAverageDistributionDontKnow[i]+{{dataDeviationDistributionDontKnow}}[i]];
+        }
+                
+        $(function() {
+        // Container for the alive step
+	    $('#containerAlive').highcharts({
+		chart: {
+			zoomType: 'xy'
+		},
+		title: {
+			text: 'Alive Cells Analysis'
+		},
+		xAxis: [{
+			categories: categoriesArray
+		}],
+		yAxis: [{ // Primary yAxis
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#89A54E'
+				}
+			},
+			title: {
+				text: 'Amount of cells',
+				style: {
+					color: '#89A54E'
+				}
+			}
+		}],
+
+		tooltip: {
+			shared: true
+		},
+
+		series: [{
+			name: 'Average Alive',
+			color: '#89A54E',
+			type: 'spline',
+			data: dataAverageAlive,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Alive',
+			type: 'errorbar',
+			data: dataDeviationAlive,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        },
+		        {
+			name: 'Average Dead',
+			color: '#4572A7',
+			type: 'spline',
+			data: dataAverageDead,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Dead',
+			type: 'errorbar',
+			data: dataDeviationDead,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        },
+		        {
+			name: 'Average Not Sure',
+			color: '#DF5353',
+			type: 'spline',
+			data: dataAverageDontKnow,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Not Sure',
+			type: 'errorbar',
+			data: dataDeviationDontKnow,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        }]
+	        });
+	        
+	        // Container for the shape step
+	        $('#containerShape').highcharts({
+		chart: {
+			zoomType: 'xy'
+		},
+		title: {
+			text: 'Cell Shape Analysis'
+		},
+		xAxis: [{
+			categories: categoriesArray
+		}],
+		yAxis: [{ // Primary yAxis
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#89A54E'
+				}
+			},
+			title: {
+				text: 'Amount of cells',
+				style: {
+					color: '#89A54E'
+				}
+			}
+		}],
+
+		tooltip: {
+			shared: true
+		},
+
+		series: [{
+			name: 'Average Elongated',
+			color: '#89A54E',
+			type: 'spline',
+			data: dataAverageElongated,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Elongated',
+			type: 'errorbar',
+			data: dataDeviationElongated,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        },
+		        {
+			name: 'Average Rounded',
+			color: '#4572A7',
+			type: 'spline',
+			data: dataAverageRounded,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Rounded',
+			type: 'errorbar',
+			data: dataDeviationRounded,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        },
+		        {
+			name: 'Average Star',
+			color: '#DF5353',
+			type: 'spline',
+			data: dataAverageStar,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Star',
+			type: 'errorbar',
+			data: dataDeviationStar,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        }]
+	        });
+	        
+	        // Container for the cell content release step
+	        $('#containerRelease').highcharts({
+		chart: {
+			zoomType: 'xy'
+		},
+		title: {
+			text: 'Cell Content Release Analysis'
+		},
+		xAxis: [{
+			categories: categoriesArray
+		}],
+		yAxis: [{ // Primary yAxis
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#89A54E'
+				}
+			},
+			title: {
+				text: 'Amount of cells',
+				style: {
+					color: '#89A54E'
+				}
+			}
+		}],
+
+		tooltip: {
+			shared: true
+		},
+
+		series: [{
+			name: 'Average Release',
+			color: '#89A54E',
+			type: 'spline',
+			data: dataAverageRelease,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Release',
+			type: 'errorbar',
+			data: dataDeviationRelease,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        }]
+	        });
+	        
+	        // Container for the mitochondria distribution step
+	        $('#containerDistribution').highcharts({
+		chart: {
+			zoomType: 'xy'
+		},
+		title: {
+			text: 'Mitochondria Distribution Analysis'
+		},
+		xAxis: [{
+			categories: categoriesArray
+		}],
+		yAxis: [{ // Primary yAxis
+			labels: {
+				formatter: function() {
+					return this.value;
+				},
+				style: {
+					color: '#89A54E'
+				}
+			},
+			title: {
+				text: 'Amount of cells',
+				style: {
+					color: '#89A54E'
+				}
+			}
+		}],
+
+		tooltip: {
+			shared: true
+		},
+
+		series: [{
+			name: 'Average Clustered',
+			color: '#89A54E',
+			type: 'spline',
+			data: dataAverageClustered,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Clustered',
+			type: 'errorbar',
+			data: dataDeviationClustered,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        },
+		        {
+			name: 'Average Scattered',
+			color: '#4572A7',
+			type: 'spline',
+			data: dataAverageScattered,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Scattered',
+			type: 'errorbar',
+			data: dataDeviationScattered,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        },
+		        {
+			name: 'Average Not Sure',
+			color: '#DF5353',
+			type: 'spline',
+			data: dataAverageDistributionDontKnow,
+			tooltip: {
+				pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}</b> '
+			}
+		        }, {
+			name: 'Standard Deviation Not Sure',
+			type: 'errorbar',
+			data: dataDeviationDistributionDontKnow,
+			tooltip: {
+				pointFormat: '(error range: {point.low}-{point.high})<br/>'
+			}
+		        }]
+	        });
+           });
+    </script>
+    <div class="container-fluid">  
+      <div class="row-fluid">  
+        <div class="span12">  
+          <div class="leaderboard">  
+            <h3>Results of the sequence: {{task_name}}</h3>  
+            <div id="containerAlive" style="height: 400px; margin: auto; min-width: 500px; max-width: 900px"></div>
+            <br><br>
+            <div id="containerShape" style="height: 400px; margin: auto; min-width: 500px; max-width: 900px"></div>
+            <br><br>
+            <div id="containerRelease" style="height: 400px; margin: auto; min-width: 500px; max-width: 900px"></div>
+            <br><br>
+            <div id="containerDistribution" style="height: 400px; margin: auto; min-width: 500px; max-width: 900px"></div>
+            <div id="userRemarks">
+                <h3>Remarks written by the users</h3>
+                {% for remark in remarks %}
+                    <li>"{{ remark }}"</li>
+                {% endfor %}
+            </div>
+            <br><br>
+          </div>  
+        </div>      
+        <footer>  
+        </footer>  
+      </div>
+    </div><!--/.fluid-container-->

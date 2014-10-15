@@ -1,0 +1,130 @@
+from app import db
+from hashlib import md5
+
+class user_results(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    nickname = db.Column(db.String(64), index = True)
+    email = db.Column(db.String(120), index = True, unique = True)
+    applications = db.relationship('research_results', backref = 'researcher', lazy = 'dynamic')
+    
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+        
+    def __repr__(self):
+        return '<user_results %r>' % (self.nickname)
+        
+    def avatar(self, size):
+        return 'http://www.gravatar.com/avatar/' + md5(self.email).hexdigest() + '?d=mm&s=' + str(size)
+    
+    def applications_participating(self):
+        return app_results.query.join(research_results, (app_results.id == research_results.app_app_fkey)).filter(research_results.researcher_user_results_fkey == self.id)
+
+class app_results(db.Model):
+    __tablename__ = 'app'
+    id = db.Column(db.Integer, primary_key = True)
+    created = db.Column(db.Text)
+    name = db.Column(db.String(255))
+    short_name = db.Column(db.String(255), index = True)
+    description = db.Column(db.String(255))
+    long_description = db.Column(db.Text)
+    long_tasks = db.Column(db.Integer)
+    hidden = db.Column(db.Integer)
+    owner_id = db.Column(db.Integer)
+    time_estimate = db.Column(db.Integer)
+    time_limit = db.Column(db.Integer)
+    calibration_frac = db.Column(db.Float)
+    bolt_course_id = db.Column(db.Integer)
+    info = db.Column(db.Text)
+    allow_anonymous_contributors = db.Column(db.Boolean)
+    tasks = db.relationship('task', backref = 'application', lazy = 'dynamic')
+    task_runs = db.relationship('task_run', backref = 'application', lazy = 'dynamic')
+    researchers = db.relationship('research_results', backref = 'application', lazy = 'dynamic')
+    
+    def get_id(self):
+        return unicode(self.id)
+        
+    def get_name(self):
+        return unicode(self.name)
+        
+    def get_short_name(self):
+        return unicode(self.short_name)
+        
+    def get_description(self):
+        return unicode(self.description)
+        
+    def get_long_description(self):
+        return unicode(self.long_description)
+        
+    def __repr__(self):
+        return '<app_results %r>' % (self.name)
+ 
+class research_results(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    researcher_user_results_fkey = db.Column(db.Integer, db.ForeignKey('user_results.id'))
+    app_app_fkey = db.Column(db.Integer, db.ForeignKey('app.id'))
+    
+    def get_id(self):
+        return unicode(self.id)
+        
+    def __repr__(self):
+        return '<research_results %r>' % (self.id)
+        
+class task(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    created = db.Column(db.Text)
+    app_id = db.Column(db.Integer, db.ForeignKey('app.id'))
+    state = db.Column(db.Text)
+    quorum = db.Column(db.Integer)
+    calibration = db.Column(db.Integer)
+    priority_0 = db.Column(db.Float)
+    info = db.Column(db.Text)
+    n_answers = db.Column(db.Integer)
+    task_runs = db.relationship('task_run', backref = 'task', lazy = 'dynamic')
+
+    def get_id(self):
+        return unicode(self.id)
+        
+    def get_app_id(self):
+        return unicode(self.app_id)
+        
+    def get_info(self):
+        return unicode(self.info)
+        
+    def __repr__(self):
+        return '<task %r>' % (self.info)
+        
+class task_run(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    created = db.Column(db.Text)
+    app_id = db.Column(db.Integer, db.ForeignKey('app.id'))
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
+    user_id = db.Column(db.Integer)
+    user_ip = db.Column(db.Text)
+    finish_time = db.Column(db.Text)
+    timeout = db.Column(db.Integer)
+    calibration = db.Column(db.Integer)
+    info = db.Column(db.Text)
+
+    def get_id(self):
+        return unicode(self.id)
+        
+    def get_app_id(self):
+        return unicode(self.app_id)
+        
+    def get_task_id(self):
+        return unicode(self.task_id)
+        
+    def get_info(self):
+        return unicode(self.info)
+        
+    def __repr__(self):
+        return '<task_run %r>' % (self.info)

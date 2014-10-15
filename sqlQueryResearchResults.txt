@@ -1,0 +1,9 @@
+CREATE SEQUENCE research_results_id_seq;
+
+CREATE TABLE research_results (
+         id INT NOT NULL default nextval('research_results_id_seq') PRIMARY KEY,
+         researcher_user_results_fkey INT REFERENCES user_results,
+         app_app_fkey INT REFERENCES app
+       );
+       
+ALTER SEQUENCE research_results_id_seq owned by research_results.id;

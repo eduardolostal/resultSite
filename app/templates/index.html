@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- Show a drop-down list to select the application
+        Note only the applications that user has access
+        will be available -->
+    <p>Select the application:   
+        <form action="{{url_for('resultsApp')}}" method="post" name="app_selection">
+            <select id="app_select" name="app_select">
+                {% for application in applications %}
+                    <!-- Populate the dropw-down list -->
+                    <option value="{{application.name}}">{{application.name}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Show tasks with results">
+        </form>
+    </p>
+    <!--a href="{{url_for('resultsApp')}}">Show tasks with results</a--> 
+{% endblock %}

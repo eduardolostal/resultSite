@@ -1,0 +1,27 @@
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->  
+    <!--[if lt IE 9]>  
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>  
+    <![endif]-->  
+  
+    <script type="text/javascript">
+        var auxString = {{statistics_semantics_dump}};
+        auxString = auxString.replace(" ", "&nbsp");
+        $(function() {
+            // Container for the alive step
+	        $('#statistics_semantics').text(auxString);
+	    });
+    </script>
+    <div class="container-fluid">  
+      <div class="row-fluid">  
+        <div class="span12">  
+          <div class="leaderboard">  
+            <h3>Results of the pair: {{task_name}}</h3>
+                <div id="statistics_semantics">
+                </div>
+            <br><br>
+          </div>  
+        </div>      
+        <footer>  
+        </footer>  
+      </div>
+    </div><!--/.fluid-container-->

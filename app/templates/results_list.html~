@@ -1,0 +1,10 @@
+{% for result in results %}
+    {% if app_name=="Cells Images" %}
+        <a href="{{url_for('taskResultsApp', app_name=app_name, task_id=result[0])}}">{{result[0]}}</a>
+    {% else %}
+        <a href="{{url_for('taskResultsApp', app_name=app_name, task_id=result[1])}}">{{result[0]}}</a>
+    {% endif %}
+{% endfor %}
+<br><br>
+{{results_length}}
+{{app_name}}

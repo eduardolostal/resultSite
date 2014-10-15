@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- Show a drop-down list to select the application
+        Note only the applications that user has access
+        will be available -->
+    <p>Select the application</p> 
+    {% for application in applications %}
+        <!-- Populate the dropw-down list -->
+        {{user.nickname}}
+    {% endfor %}
+{% endblock %}

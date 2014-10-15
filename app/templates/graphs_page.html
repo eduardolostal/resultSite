@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- Buttons for going back to Task selection pages -->
+    <a href="{{url_for('filterResults', app_name=app_name)}}">Task Selection </a>     
+    <!-- Button for download the results JSON encoded for this task -->
+    
+    {% if app_id==421 %}
+        {% include 'graphs_cells.html' %}
+    {% endif %}
+    {% if app_id==418 %}
+        {% include 'statistics_semantics_page.html' %}
+    {% endif %}
+{% endblock %}

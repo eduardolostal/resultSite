@@ -1,0 +1,6 @@
+{% for result in results %}
+    <a href="{{url_for('taskResultsApp', app_name=app_name, task_id=result[1], task_name=result[0])}}">{{result[0]}}</a>
+{% endfor %}
+<br><br>
+{{results_length}}
+{{app_name}}
